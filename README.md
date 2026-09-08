@@ -60,3 +60,10 @@ pytest -v
 | _Fernanda Soares Beleza_ | Desenvolvedor(a) |
 | _Rafaela Silva_ | Qualidade |
 | _Isabella Santiago_ | Operações/Infraestrutura |
+
+## Marco 1: Integração Contínua(CI) e Conteinerização Inicial
+
+Para a atividade de avaliação do dia 09/09/2026, foi feito:
+- Repositório Git Estruturado em Trunk Based;
+- Código-fonte com Testes Automatizados;
+- Pipeline de CI Operacional
