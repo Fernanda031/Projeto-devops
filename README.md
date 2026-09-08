@@ -38,6 +38,7 @@ docker-compose up --build
 ```
 
 A API sobe em `http://localhost:8000` (docs interativas em `/docs`).
+> **Observação:** se a porta 3306 já estiver em uso na sua máquina (por um MySQL local instalado fora do Docker), o `docker-compose.yml` expõe o banco na porta 3307 (`3307:3306`) para evitar conflito. A aplicação continua acessando o banco normalmente pela rede interna do Docker. É necessário ter o **Docker Desktop aberto e rodando** antes de executar o comando acima.
 
 ## Rodando os testes
 
