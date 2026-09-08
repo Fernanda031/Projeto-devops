@@ -25,7 +25,14 @@ def get_books(db: Session):
 def get_book(db: Session, book_id: int):
     return db.query(models.Book).filter(models.Book.id == book_id).first()
 
-
+def search_books(db: Session, title: str = None, author: str = None):
+    query = db.query(models.Book)
+    if title:
+        query = query.filter(models.Book.title.ilike(f"%{title}%"))
+    if author:
+        query = query.filter(models.Book.author.ilike(f"%{author}%"))
+    return query.all()
+    
 def create_loan(db: Session, loan: schemas.LoanCreate) -> models.Loan:
     book = get_book(db, loan.book_id)
     if book is None:

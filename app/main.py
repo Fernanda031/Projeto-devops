@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-
+from typing import Optional
 from app import models, schemas, crud
 from app.database import engine, get_db
 
@@ -23,6 +23,9 @@ def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
 def list_books(db: Session = Depends(get_db)):
     return crud.get_books(db)
 
+@app.get("/books/search", response_model=list[schemas.BookOut])
+def search_books(title: Optional[str] = None, author: Optional[str] = None, db: Session = Depends(get_db)):
+    return crud.search_books(db, title=title, author=author)
 
 @app.get("/books/{book_id}", response_model=schemas.BookOut)
 def get_book(book_id: int, db: Session = Depends(get_db)):

@@ -60,3 +60,9 @@ def test_loan_flow_end_to_end(client):
 def test_get_nonexistent_book_returns_404(client):
     response = client.get("/books/999")
     assert response.status_code == 404
+
+def test_search_books_by_title(client):
+    client.post("/books", json={"title": "Capitu", "author": "Machado", "isbn": "777", "total_copies": 1})
+    response = client.get("/books/search?title=Capitu")
+    assert response.status_code == 200
+    assert len(response.json()) == 1
