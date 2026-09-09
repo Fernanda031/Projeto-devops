@@ -5,6 +5,10 @@ from app import models, schemas
 
 
 def create_book(db: Session, book: schemas.BookCreate) -> models.Book:
+    existing = db.query(models.Book).filter(models.Book.isbn == book.isbn).first()
+    if existing is not None:
+        raise ValueError("Já existe um livro cadastrado com esse ISBN")
+
     db_book = models.Book(
         title=book.title,
         author=book.author,

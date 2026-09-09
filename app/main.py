@@ -16,7 +16,10 @@ def root():
 
 @app.post("/books", response_model=schemas.BookOut)
 def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
-    return crud.create_book(db, book)
+    try:
+        return crud.create_book(db, book)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
 
 
 @app.get("/books", response_model=list[schemas.BookOut])
