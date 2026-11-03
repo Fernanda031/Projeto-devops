@@ -6,10 +6,9 @@ from sqlalchemy.orm import sessionmaker
 # Em produção/dev, usamos MySQL. Nos testes (CI), sobrescrevemos via env var
 # para usar SQLite em memória, o que deixa a suíte de testes rápida e sem
 # depender de um servidor MySQL rodando localmente.
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "mysql+pymysql://library_user:library_pass@localhost:3306/library_db",
-)
+# Sem credenciais no código: em produção a URL vem da variável de ambiente.
+# Sem a variável, usa SQLite local (bom para desenvolvimento e testes).
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./local.db")
 
 connect_args = {}
 if DATABASE_URL.startswith("sqlite"):
