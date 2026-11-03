@@ -1,14 +1,12 @@
-version: "3.9"
-
 services:
   db:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_DATABASE: library_db
-      MYSQL_USER: library_user
-      MYSQL_PASSWORD: library_pass
-      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?defina MYSQL_PASSWORD no arquivo .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?defina MYSQL_ROOT_PASSWORD no arquivo .env}
     ports:
       - "3307:3306"
     volumes:
@@ -26,7 +24,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: "mysql+pymysql://library_user:library_pass@db:3306/library_db"
+      DATABASE_URL: "mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}"
     ports:
       - "8000:8000"
 

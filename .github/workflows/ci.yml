@@ -32,3 +32,35 @@ jobs:
 
       - name: Build da imagem Docker
         run: docker build -t library-system:${{ github.sha }} .
+
+  compose-smoke-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Criar .env a partir do exemplo
+        run: cp .env.example .env
+
+      - name: Validar sintaxe do compose
+        run: docker compose config > /dev/null
+
+      - name: Subir app + MySQL
+        run: docker compose up -d --build
+
+      - name: Esperar a API responder
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:8000/ > /dev/null; then
+              echo "API respondeu"
+              exit 0
+            fi
+            sleep 3
+          done
+          docker compose logs
+          exit 1
+
+      - name: Derrubar ambiente
+        if: always()
+        run: docker compose down -v
