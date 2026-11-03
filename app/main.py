@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import Optional
@@ -13,7 +14,15 @@ app = FastAPI(title="Sistema de Biblioteca")
 def root():
     return {"status": "ok", "service": "library-system"}
 
+@app.get("/health")
+def health():
+    return {"status": "healthy"}
 
+
+@app.get("/version")
+def version():
+    return {"version": os.getenv("APP_VERSION", "dev")}
+    
 @app.post("/books", response_model=schemas.BookOut)
 def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
     try:
