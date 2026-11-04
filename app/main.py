@@ -16,7 +16,7 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "healthy"}
+    raise HTTPException(status_code=500, detail="falha simulada")
 
 
 @app.get("/version")
