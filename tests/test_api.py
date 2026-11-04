@@ -109,3 +109,14 @@ def test_return_loan_twice_via_api_fails(client):
     client.post(f"/loans/{loan_id}/return")
     second_return = client.post(f"/loans/{loan_id}/return")
     assert second_return.status_code == 400
+
+    def test_health(client):
+    response = client.get("/health")
+    assert response.status_code == 200
+    assert response.json() == {"status": "healthy"}
+
+
+def test_version(client):
+    response = client.get("/version")
+    assert response.status_code == 200
+    assert "version" in response.json()
